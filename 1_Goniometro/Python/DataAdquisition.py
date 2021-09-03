@@ -5,6 +5,8 @@ import numpy as np              # pip install numpy
 import xlrd                     # pip install xlrd
 import xlsxwriter               # pip install xlscwriter
 import cv2                      # pip install pyton-cv
+from datetime import datetime
+import json 
 
 class bcolors:
     HEADER = '\033[95m'
@@ -112,7 +114,29 @@ def UserInputValidator(message:str) -> bool:
         
     return Status
         
-  
+def saveDictionary(data: dict,filename:str = "dfnone") -> None:
+    
+    ### Handle Filename ###
+    if filename == "dfnone":
+        filename = "report_" + (datetime.now()).strftime("%H_%M_%S") + ".json"
+    elif filename != "dfnone":
+        if ".json" in filename:
+            pass
+        else:
+            filename = filename + ".json"
+            
+    with open(filename, "w") as handler:
+        json.dump(data,handler)
+    
+    print(f"Data has been saved as {filename}")
+    
+
+def openDictionary(filename:str) -> dict:
+    with open(filename, "r") as handler:
+        data = json.load(handler)
+    
+    return data
+
 def MainLoopProtocol():
     """Practical Example"""
     keys = ["sensor_0","sensor_1","sensor_2","sensor_3","sensor_4","sensor_5"] # List containig number of sensors
